@@ -1,9 +1,51 @@
-# WTWR (What to Wear?): Back End
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
-## Running the Project
-`npm run start` — to launch the server 
+# WTWR (What to Wear?) — Back End
 
-`npm run dev` — to launch the server with the hot reload feature
+Weather Clothing Items API — a compact RESTful backend that manages clothing items by weather, lets users create items, and like/unlike items. Built with Node.js, Express and MongoDB (Mongoose).
 
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+## Technologies
+
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+- validator
+- Postman (recommended for testing)
+
+## Features
+
+- Create clothing items (name, weather, imageUrl)
+- Retrieve all clothing items
+- Like and remove likes from items
+- Input validation and standardized error handling (400 / 404 / 500)
+- Temporary authorization middleware to associate items with a user
+- RESTful endpoints designed for front-end consumption
+
+## Quick start
+
+1. Install dependencies:
+   ```bash
+   npm ci
+   ```
+2. Start (development):
+   ```bash
+   npm run dev
+   ```
+3. Start (production):
+   ```bash
+   npm run start
+   ```
+
+## API (summary)
+
+- Users
+  - GET /users
+  - GET /users/:userId
+  - POST /users
+    - body: { "name": "Alice", "avatar": "https://..." }
+- Items
+  - GET /items
+  - POST /items
+    - body: { "name": "Jacket", "weather": "cold", "imageUrl": "https://..." }
+  - DELETE /items/:itemId
+  - PUT /items/:itemId/likes
+  - DELETE /items/:itemId/likes
