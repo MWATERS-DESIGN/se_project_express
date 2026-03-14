@@ -1,9 +1,10 @@
-const Item = require("../models/clothingItem");
+const clothingItem = require("../models/clothingItem");
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
 // Get /items
 const getItem = (req, res) => {
-  Item.find({})
+  clothingItem
+    .find({})
     .then((items) => {
       const normalizedItems = items.map((item) => {
         const itemObj = item.toObject();
@@ -27,12 +28,13 @@ const getItem = (req, res) => {
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
-  Item.create({
-    name,
-    weather,
-    imageUrl,
-    owner: req.user._id,
-  })
+  clothingItem
+    .create({
+      name,
+      weather,
+      imageUrl,
+      owner: req.user._id,
+    })
     .then((item) => res.status(201).send(item))
     .catch((err) => {
       console.error(err);
@@ -47,7 +49,8 @@ const createItem = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  Item.findByIdAndDelete(itemId)
+  clothingItem
+    .findByIdAndDelete(itemId)
     .orFail()
     .then((item) => {
       if (!item) {
@@ -72,9 +75,13 @@ const deleteItem = (req, res) => {
 // Update /items/:itemId likes
 const updateItem = (req, res) => {
   const { itemId } = req.params;
-  const { imageUrl } = req.body;
 
-  Item.findByIdAndUpdate(itemId, { $addToSet: { imageUrl } }, { new: true })
+  clothingItem
+    .findByIdAndUpdate(
+      itemId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true }
+    )
     .orFail()
     .then((item) => {
       if (!item) {
@@ -103,11 +110,12 @@ const updateItem = (req, res) => {
 const deleteItemDislike = (req, res) => {
   const { itemId } = req.params;
 
-  Item.findByIdAndUpdate(
-    itemId,
-    { $pull: { dislikes: req.user._id } },
-    { new: true }
-  )
+  clothingItem
+    .findByIdAndUpdate(
+      itemId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    )
     .orFail()
     .then((item) => {
       if (!item) {
