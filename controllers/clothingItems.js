@@ -1,7 +1,7 @@
 const Item = require("../models/clothingItem");
 const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 
-//Get /items
+// Get /items
 const getItem = (req, res) => {
   Item.find({})
     .then((items) => {
@@ -18,7 +18,7 @@ const getItem = (req, res) => {
     });
 };
 
-//Create /items
+// Create /items
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
@@ -38,7 +38,7 @@ const createItem = (req, res) => {
     });
 };
 
-//Delete /items/:itemId
+// Delete /items/:itemId
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
@@ -48,13 +48,14 @@ const deleteItem = (req, res) => {
       if (!item) {
         return res.status(404).send({ message: "Item not found" });
       }
-      res.status(200).send({ message: "Item deleted successfully" });
+      return res.status(200).send({ message: "Item deleted successfully" });
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid item ID format" });
@@ -63,7 +64,7 @@ const deleteItem = (req, res) => {
     });
 };
 
-//Update /items/:itemId likes
+// Update /items/:itemId likes
 const updateItem = (req, res) => {
   const { itemId } = req.params;
   const { imageUrl } = req.body;
@@ -74,15 +75,17 @@ const updateItem = (req, res) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      res.status(200).send(item);
+      return res.status(200).send(item);
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name === "ValidationError") {
+      }
+      if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid user ID format" });
@@ -91,7 +94,7 @@ const updateItem = (req, res) => {
     });
 };
 
-//Delete /items/:itemId dislikes
+// Delete /items/:itemId dislikes
 const deleteItemDislike = (req, res) => {
   const { itemId } = req.params;
 
@@ -108,15 +111,17 @@ const deleteItemDislike = (req, res) => {
       if (!Array.isArray(item.dislikes)) {
         item.dislikes = [];
       }
-      res.status(200).send(item);
+      return res.status(200).send(item);
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: err.message });
-      } else if (err.name === "ValidationError") {
+      }
+      if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
-      } else if (err.name === "CastError") {
+      }
+      if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid user ID format" });
