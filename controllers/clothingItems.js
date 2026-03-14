@@ -5,12 +5,17 @@ const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
 const getItem = (req, res) => {
   Item.find({})
     .then((items) => {
-      items.forEach((item) => {
-        if (!Array.isArray(item.dislikes)) {
-          item.dislikes = [];
+      const normalizedItems = items.map((item) => {
+        const itemObj = item.toObject();
+
+        if (!Array.isArray(itemObj.dislikes)) {
+          itemObj.dislikes = [];
         }
+
+        return itemObj;
       });
-      res.status(200).send(items);
+
+      return res.status(200).send(normalizedItems);
     })
     .catch((err) => {
       console.error(err);
@@ -108,10 +113,13 @@ const deleteItemDislike = (req, res) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
-      if (!Array.isArray(item.dislikes)) {
-        item.dislikes = [];
+      const itemObj = item.toObject();
+
+      if (!Array.isArray(itemObj.dislikes)) {
+        itemObj.dislikes = [];
       }
-      return res.status(200).send(item);
+
+      return res.status(200).send(itemObj);
     })
     .catch((err) => {
       console.error(err);
