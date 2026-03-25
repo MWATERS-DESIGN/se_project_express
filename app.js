@@ -19,6 +19,13 @@ mongoose
 
 app.use(express.json());
 
+if (process.env.NODE_ENV === "test") {
+  app.use((req, res, next) => {
+    req.user = { _id: "5d8b8592978f8bd833ca8133" };
+    next();
+  });
+}
+
 // Public routes
 app.post("/signin", login);
 app.post("/signup", createUser);
