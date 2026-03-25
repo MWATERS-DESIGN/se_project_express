@@ -1,3 +1,7 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const validator = require("validator");
+
 const User = require("../models/user");
 const {
   BAD_REQUEST,
@@ -6,16 +10,13 @@ const {
   CONFLICT,
   UNAUTHORIZED,
 } = require("../utils/errors");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
-const validator = require("validator");
 
 // Create /users
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  bcrypt
+  return bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
     .then((user) => {
@@ -42,7 +43,7 @@ const createUser = (req, res) => {
 // Get /users by _id
 const getCurrentUser = (req, res) => {
   const userId = req.user._id;
-  User.findById(userId)
+  return User.findById(userId)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
@@ -77,7 +78,7 @@ const login = (req, res) => {
     return res.status(BAD_REQUEST).json({ message: "Invalid email format" });
   }
 
-  User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -97,7 +98,7 @@ const updateUser = (req, res) => {
   const { name, avatar } = req.body;
   const userId = req.user._id;
 
-  User.findByIdAndUpdate(
+  return User.findByIdAndUpdate(
     userId,
     { name, avatar },
     { new: true, runValidators: true, context: "query" }
