@@ -3,7 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const { createUser, login } = require("./controllers/users");
 const mainRouter = require("./routes/index");
-const auth = require("./middlewares/auth");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -25,9 +24,6 @@ app.post("/signup", createUser);
 
 // GET /items (public) by mounting the items router before auth
 app.use("/items", require("./routes/clothingItems"));
-
-// Protect everything after this middleware
-app.use(auth);
 
 // Protected routes (users, other routes)
 app.use("/", mainRouter);

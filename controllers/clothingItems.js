@@ -21,7 +21,7 @@ const getItem = (req, res) => {
         return itemObj;
       });
 
-      return res.status(200).send(normalizedItems);
+      return res.send(normalizedItems);
     })
     .catch((err) => {
       console.error(err);
