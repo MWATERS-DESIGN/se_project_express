@@ -92,7 +92,9 @@ const login = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "AuthError") {
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res
+          .status(UNAUTHORIZED)
+          .json({ message: "Invalid email or password" });
       }
       return res
         .status(SERVER_ERROR)
