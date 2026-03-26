@@ -37,15 +37,72 @@ Weather Clothing Items API — a compact RESTful backend that manages clothing i
 
 ## API (summary)
 
-- Users
-  - GET /users
-  - GET /users/:userId
-  - POST /users
-    - body: { "name": "Alice", "avatar": "https://..." }
-- Items
-  - GET /items
-  - POST /items
-    - body: { "name": "Jacket", "weather": "cold", "imageUrl": "https://..." }
-  - DELETE /items/:itemId
-  - PUT /items/:itemId/likes
-  - DELETE /items/:itemId/likes
+## Authentication
+
+Authentication(public)
+
+- POST /signup
+  Create a new user
+  Body:
+
+{
+"name": "Alice",
+"avatar": "https://..."
+}
+
+- POST /signin
+  Authenticate a user and return a token
+  Body: (example)
+
+{
+"email": "alice@example.com",
+"password": "password123"
+}
+
+Users(protected)
+
+- GET /users/me
+  Get the currently authenticated user's profile
+  (Requires authentication)
+
+- PATCH /users/me
+  Update the current user's profile
+  (Requires authentication)
+  Body:
+
+{
+"name": "Alice",
+"avatar": "https://..."
+}
+
+Items
+
+- GET /items
+  Get all items
+  (Public endpoint — no authentication required)
+
+- POST /items
+  Create a new item
+  (Requires authentication)
+  Body:
+
+{
+"name": "Jacket",
+"weather": "cold",
+"imageUrl": "https://..."
+}
+
+- DELETE /items/
+  Delete an item by ID
+  (Requires authentication)
+- PUT /items//likes
+  Like an item
+  (Requires authentication)
+- DELETE /items//likes
+  Remove like from an item
+  (Requires authentication)
+
+## Notes
+
+- All routes except GET /items require authentication via a valid token.
+- The previously documented endpoints (GET /users, GET /users/:userId, POST /users) are no longer supported and will return errors.

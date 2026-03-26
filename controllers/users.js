@@ -16,6 +16,10 @@ const { JWT_SECRET } = require("../utils/config");
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
+  if (!password || typeof password !== "string") {
+    return res.status(BAD_REQUEST).json({ message: "Invalid password" });
+  }
+
   return bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
@@ -87,9 +91,12 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      if (err.name === "AuthError") {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
       return res
-        .status(UNAUTHORIZED)
-        .json({ message: "Invalid email or password" });
+        .status(SERVER_ERROR)
+        .json({ message: "An error has occurred on the server" });
     });
 };
 

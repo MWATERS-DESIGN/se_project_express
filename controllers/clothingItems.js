@@ -121,7 +121,7 @@ const updateItem = (req, res) => {
       if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
-          .send({ message: "Invalid user ID format" });
+          .send({ message: "Invalid item ID format" });
       }
       return res
         .status(SERVER_ERROR)
@@ -165,7 +165,7 @@ const deleteItemDislike = (req, res) => {
       if (err.name === "CastError") {
         return res
           .status(BAD_REQUEST)
-          .send({ message: "Invalid user ID format" });
+          .send({ message: "Invalid item ID format" });
       }
       return res
         .status(SERVER_ERROR)
