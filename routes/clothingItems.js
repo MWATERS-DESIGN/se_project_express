@@ -7,6 +7,10 @@ const {
   updateItem,
   deleteItemDislike,
 } = require("../controllers/clothingItems");
+const {
+  validateClothingItem,
+  validateItemId,
+} = require("../middlewares/validation");
 
 // Public: GET /items
 router.get("/", getItem);
@@ -15,9 +19,9 @@ router.get("/", getItem);
 router.use(auth);
 
 // Protected routes
-router.post("/", createItem);
-router.delete("/:itemId", deleteItem);
-router.put("/:itemId/likes", updateItem);
-router.delete("/:itemId/likes", deleteItemDislike);
+router.post("/", validateClothingItem, createItem);
+router.delete("/:itemId", validateItemId, deleteItem);
+router.put("/:itemId/likes", validateItemId, updateItem);
+router.delete("/:itemId/likes", validateItemId, deleteItemDislike);
 
 module.exports = router;
