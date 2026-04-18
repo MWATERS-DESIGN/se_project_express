@@ -11,6 +11,12 @@ Weather Clothing Items API — a compact RESTful backend that manages clothing i
 - validator
 - Postman (recommended for testing)
 
+## See My Project Here
+
+- [My Website](https://mdw-wtwr.green-heroes.com) domain: mdw-wtwr.green-heroes.com
+- register/login and give it a try.
+- [Link to Frontend Repo](https://github.com/MWATERS-DESIGN/se_project_react)
+
 ## Features
 
 - Create clothing items (name, weather, imageUrl)
