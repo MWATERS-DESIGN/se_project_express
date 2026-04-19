@@ -2,11 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const { errors } = require("celebrate");
 const { validateUser, validateLogin } = require("./middlewares/validation");
 const { createUser, login } = require("./controllers/users");
 const mainRouter = require("./routes/index");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { errors } = require("celebrate");
+
 const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
@@ -24,13 +25,6 @@ mongoose
   .catch(console.error);
 
 app.use(express.json());
-
-// crash test route
-app.get("/crash-test", () => {
-  setTimeout(() => {
-    throw new Error("Server will crash now");
-  }, 0);
-});
 
 // Public routes
 app.post("/signin", validateLogin, login);
